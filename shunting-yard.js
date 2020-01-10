@@ -31,6 +31,12 @@ let constants = {
 };
 let constant_names = Object.keys(constants);
 
+let varnames = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let variables = {};
+for (var i = 0, len = varnames.length; i < len; i++) {
+	variables[varnames.charAt(i)] = 0;
+}
+
 let unary_functions = {
 	sin: genFunc((x) => Math.sin(x)),
 	cos: genFunc((x) => Math.cos(x)),
@@ -62,6 +68,10 @@ function isNumber(c) {
 	}
 
 	return !isNaN(c) || constant_names.includes(c) || c === '.';
+}
+
+function isVariable(c) {
+	return varnames.includes(c);
 }
 
 function getNumVal(c) {
@@ -150,6 +160,9 @@ function RPN(eqn) {
 				n = data[2];
 				if (found) {
 					type = TYPE_CONST;
+				} else if (isVariable(t)) {
+					type = TYPE_CONST;
+					obj = t;
 				} else {
 					if (left_brackets.includes(t)) {
 						type = TYPE_LPAREN;
@@ -217,7 +230,7 @@ function parse(rpn) {
 
 	Array.from(rpn).forEach((t) => {
 		let tr = null;
-		if (isNumber(t)) {
+		if (isNumber(t) || isVariable(t)) {
 			tr = genNode(t, false);
 		} else {
 			if (Object.keys(binary_functions).includes(t)) {
@@ -266,25 +279,10 @@ function eval(tree) {
 	} else {
 		if (constant_names.includes(tree.val)) {
 			return constants[tree.val];
+		} else if (varnames.includes(tree.val)) {
+			return variables[tree.val];
 		} else {
 			return tree.val;
 		}
 	}
 }
-
-document.querySelector('#btn').addEventListener('click', (e) => {
-	let eqn = document.querySelector('#input').value;
-	let rpn = RPN(eqn);
-
-	var val = 'invalid input';
-
-	if (rpn) {
-		let tree = parse(rpn);
-		val = eval(tree);
-		console.log(rpn);
-		console.log(tree);
-		console.log(val);
-	}
-
-	document.querySelector('#output').innerHTML = val;
-});
