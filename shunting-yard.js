@@ -41,9 +41,19 @@ let unary_functions = {
 	sin: genFunc((x) => Math.sin(x)),
 	cos: genFunc((x) => Math.cos(x)),
 	tan: genFunc((x) => Math.tan(x)),
+	arcsin: genFunc((x) => Math.asin(x)),
+	arccos: genFunc((x) => Math.acos(x)),
+	arctan: genFunc((x) => Math.atan(x)),
+	csc: genFunc((x) => 1 / Math.sin(x)),
+	sec: genFunc((x) => 1 / Math.cos(x)),
+	cot: genFunc((x) => 1 / Math.tan(x)),
+	arccsc: genFunc((x) => Math.asin(1 / x)),
+	arcsec: genFunc((x) => Math.acos(1 / x)),
+	arccot: genFunc((x) => Math.atan(1 / x)),
 	ln: genFunc((x) => Math.log(x)),
 	log: genFunc((x) => Math.log10(x)),
-	sqrt: genFunc((x) => Math.sqrt(x))
+	sqrt: genFunc((x) => Math.sqrt(x)),
+	abs: genFunc((x) => Math.abs(x))
 };
 
 let binary_functions = {
